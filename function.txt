@@ -1,0 +1,24 @@
+rednering in react v2
+card 3 of 3. next gives prompt to restart (ok), or bring back to home page (cancel)
+
+
+
+
+edit deck formpw
+
+
+
+edit card form
+
+
+
+add new card function
+
+
+index.js file is where you start implementing components and routes
+
+we will not need to write any fetches. they are all written for us
+- call the function that uses api then chain a .then() to access data
+
+
+use route based file structure
