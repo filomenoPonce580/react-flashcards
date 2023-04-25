@@ -4,8 +4,9 @@ import DeckList from "./DeckList";
 import { createDeck } from "../utils/api";
 
 
-function CreateDeck(){
+function CreateDeck({buildDeckList}){
 
+    const history = useHistory()
     
     let initialFormData ={
         name: '',
@@ -18,19 +19,20 @@ function CreateDeck(){
         event.preventDefault();
         setFormData({
             ...formData,
-            [event.target.name]: event.target.value
+            [event.target?.name]: event.target?.value
         });
     };
   
     function handleSubmit(event){
         event.preventDefault();
-        createDeck(formData);
-        setFormData(initialFormData);
+        createDeck(formData)
+            .then(res => {
+                buildDeckList()
+                history.push(`/decks/${res.id}`)  
+            })
     }
-    
-    function handleSubmit(){
-        alert('hello')
-    }
+
+
 
     return (
         <React.Fragment>
@@ -57,13 +59,14 @@ function CreateDeck(){
                     <label htmlFor="description"></label>
                     Description
                     <textarea 
+                        type="text"
                         name="description"
                         id="description" 
                         placeholder="Description"
                         value={formData.description} onChange={handleInputChange}></textarea>
                 </div>
                 <Link to={"/"}><button>Cancel</button></Link>
-                <Link to={"/decks/1/study"}><button>Submit</button></Link>
+                <button onClick={handleSubmit}>Submit</button>
             </form>
                 
 

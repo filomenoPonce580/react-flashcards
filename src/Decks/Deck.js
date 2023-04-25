@@ -1,10 +1,25 @@
 import React, { useState } from 'react';
 import {BrowserRouter as Router, Route, Link, Switch, useHistory, useLocation, useRouteMatch, useParams, NavLink} from "react-router-dom"
+import {deleteDeck} from "../utils/api"
 
 
 
+function Deck({data, buildDeckList}){
+    const history = useHistory()
 
-function Deck({data}){
+    function handleDeleteDeck(event){
+        console.log(data.id)
+        event.preventDefault();
+        let result = window.confirm("Delete Card?")
+        if(result){
+            deleteDeck(data.id)
+                .then(res => {
+                    buildDeckList()
+                    history.push(`/`)  
+                })
+            }
+       }
+
     return (
         <div className="card" >
             <div className="card-body">
@@ -13,11 +28,11 @@ function Deck({data}){
                 <p className="card-text">{data.description}</p>
                 <Link to={`decks/${data.id}`}><button>View</button></Link>
                 <Link to={`/decks/${data.id}/study`}><button>Study</button></Link>
-                <button>Delete</button>
+                <button onClick={handleDeleteDeck}>Delete</button>
             </div>
         </div>
     )          
 }
 
-
 export default Deck;
+//in button 

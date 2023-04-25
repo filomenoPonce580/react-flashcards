@@ -6,7 +6,7 @@ import NotFound from "./NotFound";
 import ViewDeck from "../Decks/ViewDeck";
 import CreateDeck from "../Decks/CreateDeck";
 
-import { listDecks } from "../utils/api";
+import { listDecks, deleteCard, deleteDeck } from "../utils/api";
 
 
 import {BrowserRouter as Router, Route, Link, Switch, useHistory, useLocation, useRouteMatch, useParams} from "react-router-dom"
@@ -16,13 +16,33 @@ import {BrowserRouter as Router, Route, Link, Switch, useHistory, useLocation, u
 
 function Layout() {
   let [deckList, setDeckList] = useState([])
+  
+  function buildDeckList(){
+    listDecks()
+      .then((decks) => {
+          setDeckList(decks)
+      })  
+  }
 
-  useEffect( () => {
-      listDecks()
-          .then((decks) => {
-              setDeckList(decks)
-          })        
-  }, [])
+  useEffect( buildDeckList, [])
+
+  // function handleDeleteDeck(event){
+  //   event.preventDefault();
+  //   deleteDeck(formData)
+  //       .then(res => {
+  //           buildDeckList()
+  //           history.push(`/decks/${res.id}`)  
+  //       })
+  // }
+
+  // function handleDeleteCard(event){
+  //   event.preventDefault();
+  //   deleteCard(formData)
+  //       .then(res => {
+  //           buildDeckList()
+  //           history.push(`/decks/${res.id}`)  
+  //       })
+  // }
 
 
   return (
@@ -38,15 +58,15 @@ function Layout() {
           </Route>
 
           <Route path="/decks/new">
-              <CreateDeck />
+              <CreateDeck buildDeckList={buildDeckList}/>
           </Route>
 
           <Route path="/decks/:deckId">
-              <ViewDeck deckList={deckList}/>
+              <ViewDeck deckList={deckList} buildDeckList={buildDeckList}/>
           </Route>
 
           <Route path="/">
-            <DeckList deckList={deckList} />
+            <DeckList deckList={deckList} buildDeckList={buildDeckList}/>
           </Route>
 
           <NotFound />

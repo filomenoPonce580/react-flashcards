@@ -1,10 +1,30 @@
 import React, {useState, useEffect} from "react";
 import {BrowserRouter as Router, Route, Link, Switch, useHistory, useLocation, useRouteMatch, useParams} from "react-router-dom"
+import { deleteDeck } from "../utils/api";
 //import Deck from "./Deck";
 
-function ViewDeck({deckList}){
+function ViewDeck({ deckList , buildDeckList}){
     const {deckId} = useParams()
-    let targetDeck = deckList[deckId-1]
+    console.log(deckList)
+
+    let targetDeck = deckList.find((deck)=>{
+        return Number(deck.id) === Number(deckId)
+    })
+    // console.log(targetDeck2)
+
+    const history = useHistory();
+
+    function handleDeleteDeck(event) {
+        event.preventDefault();
+        let result = window.confirm("Delete Card?");
+        if (result) {
+          deleteDeck(deckId).then((res) => {
+            buildDeckList();
+            history.push(`/`);
+          });
+        }
+      }
+
 
     return (
         <div>
@@ -22,7 +42,7 @@ function ViewDeck({deckList}){
                 <button>Edit</button>
                 <Link to={`/decks/${targetDeck?.id}/study`}><button>Study</button></Link>
                 <button>+Add Card</button>
-                <button>Delete</button>
+                <button onClick={handleDeleteDeck}>Delete</button>
             </div>
 
             <h2>Cards</h2>
@@ -34,7 +54,7 @@ function ViewDeck({deckList}){
                             <p>{card?.front}</p>
                             <p>{card?.back}</p>
                             <button>edit</button>
-                            <button>delete</button>
+                            <button>Delete</button>
                         </li>
                     })}
                 </ul>
