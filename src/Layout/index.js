@@ -5,11 +5,14 @@ import Header from "./Header";
 import NotFound from "./NotFound";
 import ViewDeck from "../Decks/ViewDeck";
 import CreateDeck from "../Decks/CreateDeck";
+import EditDeck from "../Decks/EditDeck";
+import AddCard from "../Cards/AddCard";
+import EditCard from "../Cards/EditCard"
+
 
 import { listDecks, deleteCard, deleteDeck } from "../utils/api";
-
-
 import {BrowserRouter as Router, Route, Link, Switch, useHistory, useLocation, useRouteMatch, useParams} from "react-router-dom"
+
 
 
 
@@ -25,6 +28,8 @@ function Layout() {
   }
 
   useEffect( buildDeckList, [])
+
+
 
   // function handleDeleteDeck(event){
   //   event.preventDefault();
@@ -53,12 +58,26 @@ function Layout() {
         {/*On click, display a form, render a form component*/}
         {/*Render deck list component*/}
         <Switch>
+
+          <Route path="/decks/:deckId/cards/:cardId/edit">
+              <EditCard deckList={deckList} buildDeckList={buildDeckList}/>
+          </Route>
+
+          <Route path="/decks/:deckId/cards/new">
+              <AddCard deckList={deckList} buildDeckList={buildDeckList}/>
+          </Route>
+
+
           <Route path="/decks/:deckId/study">
               <Study />
           </Route>
 
           <Route path="/decks/new">
               <CreateDeck buildDeckList={buildDeckList}/>
+          </Route>
+
+          <Route path="/decks/:deckId/edit">
+              <EditDeck deckList={deckList} buildDeckList={buildDeckList}/>
           </Route>
 
           <Route path="/decks/:deckId">

@@ -1,19 +1,22 @@
 import React, {useState, useEffect} from "react";
 import {BrowserRouter as Router, Route, Link, Switch, useHistory, useLocation, useRouteMatch, useParams} from "react-router-dom"
-import DeckList from "./DeckList";
-import { createDeck } from "../utils/api";
+import {createCard} from "../utils/api"
 
-
-function CreateDeck({buildDeckList}){
-
+function AddCard({deckList, buildDeckList}){
+    const {deckId} = useParams()
     const history = useHistory()
+
     
     let initialFormData ={
-        name: '',
-        description: '',
+        front: '',
+        back: '',
     }
-
     const [formData, setFormData] = useState(initialFormData)
+
+    let targetDeck = deckList.find((deck)=>{
+        return Number(deck.id) === Number(deckId)
+    })
+
   
     function handleInputChange(event){
         event.preventDefault();
@@ -25,13 +28,12 @@ function CreateDeck({buildDeckList}){
   
     function handleSubmit(event){
         event.preventDefault();
-        createDeck(formData)
+        createCard(deckId, formData)
             .then(res => {
                 buildDeckList()
-                history.push(`/decks/${res.id}`)  
+                history.push(`/decks/${deckId}`)  
             })
     }
-
 
 
     return (
@@ -40,40 +42,40 @@ function CreateDeck({buildDeckList}){
                 <nav aria-label="breadcrumb">
                     <ol className="breadcrumb">
                         <li className="breadcrumb-item"><Link to="/">Home</Link></li>
-                        <li className="breadcrumb-item active">Create Deck</li>
+                        <li className="breadcrumb-item"><Link to={`/decks/${deckId}`}>{targetDeck?.name}</Link></li>
+                        <li className="breadcrumb-item active">Add Card</li>
                     </ol>
                 </nav>
             </div>
-            <h1>Create Deck</h1>
+
+            <h1>{targetDeck?.name}: Add Card</h1>
 
 
             <form onSubmit={handleSubmit}>
                 <div>
-                    <label htmlFor="name">Name</label>
-                    <input 
-                        type="text" 
-                        name="name" 
-                        id="name" 
-                        placeholder="Deck Name" 
-                        value={formData.name} onChange={handleInputChange}/>
-                    <label htmlFor="description"></label>
-                    Description
+                    <label htmlFor="front"></label>
+                    Front
                     <textarea 
                         type="text"
-                        name="description"
-                        id="description" 
-                        placeholder="Description"
+                        name="front"
+                        id="front" 
+                        placeholder="Front"
+                        value={formData.description} onChange={handleInputChange}></textarea>
+                    <label htmlFor="back"></label>
+                    Back
+                    <textarea 
+                        type="text"
+                        name="back"
+                        id="back" 
+                        placeholder="Back"
                         value={formData.description} onChange={handleInputChange}></textarea>
                 </div>
-                <Link to={"/"}><button>Cancel</button></Link>
-                <button onClick={handleSubmit}>Submit</button>
+                <Link to={"/"}><button>Done</button></Link>
+                <button onClick={handleSubmit}>Save</button>
             </form>
                 
         </React.Fragment>
     )
-
 }
 
-export default CreateDeck
-
-{/*onChange={handleInputChange}*/} 
+export default AddCard

@@ -12,7 +12,6 @@ function DeckList({deckList, buildDeckList}, {  deleteDeck, replaceDeck }) {
         <Link to={`/decks/new`}><button>+ Create A Deck</button></Link>
         {/*Render Deck componend within map. */}
         {deckList.map((oneDeck, indx) => <Deck key={indx} data={oneDeck} buildDeckList={buildDeckList}/>)}
-        listed decks
     </div>
 }
 

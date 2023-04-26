@@ -10,7 +10,7 @@ function Deck({data, buildDeckList}){
     function handleDeleteDeck(event){
         console.log(data.id)
         event.preventDefault();
-        let result = window.confirm("Delete Card?")
+        let result = window.confirm("Delete Deck?")
         if(result){
             deleteDeck(data.id)
                 .then(res => {
