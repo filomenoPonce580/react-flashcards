@@ -1,25 +1,23 @@
 import React, {useState, useEffect} from "react";
-import {BrowserRouter as Router, Route, Link, Switch, useHistory, useLocation, useRouteMatch, useParams} from "react-router-dom"
-import DeckList from "./DeckList";
+import {BrowserRouter as Router, Route, Link, useHistory} from "react-router-dom"
 import { createDeck } from "../utils/api";
 
 
 function CreateDeck({buildDeckList}){
-
     const history = useHistory()
-    
+
     let initialFormData ={
         name: '',
         description: '',
     }
-
     const [formData, setFormData] = useState(initialFormData)
   
+
     function handleInputChange(event){
         event.preventDefault();
         setFormData({
             ...formData,
-            [event.target?.name]: event.target?.value
+            [event.target.name]: event.target.value
         });
     };
   
@@ -31,8 +29,6 @@ function CreateDeck({buildDeckList}){
                 history.push(`/decks/${res.id}`)  
             })
     }
-
-
 
     return (
         <React.Fragment>
@@ -75,5 +71,3 @@ function CreateDeck({buildDeckList}){
 }
 
 export default CreateDeck
-
-{/*onChange={handleInputChange}*/} 

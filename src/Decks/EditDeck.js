@@ -1,32 +1,30 @@
 import React, { Fragment, useState, useEffect } from "react";
-import {BrowserRouter as Router, Route, Link, Switch, useHistory, useLocation, useRouteMatch, useParams} from "react-router-dom"
-import {updateDeck} from "../utils/api"
+import {BrowserRouter as Router, Link, useHistory, useParams} from "react-router-dom"
+import {updateDeck, readDeck} from "../utils/api"
 
-function EditDeck({ deckList, buildDeckList }){
+function EditDeck({ buildDeckList }){
     const history = useHistory()
     const {deckId} = useParams()
-
-    
-    let initialFormData ={
-        name: '',
-        description: '',
-    }    
+    const [deck, setDeck] = useState({})
+    const [formData, setFormData] = useState({name: '', description: ''})
 
 
-    let targetDeck = deckList.find((deck)=>{
-        return Number(deck.id) === Number(deckId)
-    })
-
-
-
-    const [formData, setFormData] = useState(initialFormData)
+    useEffect(() => {
+        readDeck(deckId).then((res) => {
+          setDeck(res);
+          setFormData({
+            name: res.name,
+            description: res.description,
+          });
+        });
+      }, [deckId]);
 
   
 
     function handleInputChange(event){
         setFormData({
             ...formData,
-            [event.target?.name]: event.target?.value
+            [event.target.name]: event.target.value
         });
     };
 
@@ -34,7 +32,7 @@ function EditDeck({ deckList, buildDeckList }){
 
     function handleSubmit(event){
         event.preventDefault();
-        formData.id = targetDeck?.id
+        formData.id = deck && deck.id
         updateDeck(formData)
             .then(res => {
                 buildDeckList()
@@ -48,7 +46,7 @@ function EditDeck({ deckList, buildDeckList }){
             <nav aria-label="breadcrumb">
                 <ol className="breadcrumb">
                     <li className="breadcrumb-item"><Link to="/">Home</Link></li>
-                    <li className="breadcrumb-item"><Link to={`/decks/${deckId}`}>{targetDeck?.name}</Link></li>
+                    <li className="breadcrumb-item"><Link to={`/decks/${deckId}`}>{deck && deck.name}</Link></li>
                     <li className="breadcrumb-item active" aria-current="page">Edit Deck</li>
                 </ol>
             </nav>
@@ -60,7 +58,6 @@ function EditDeck({ deckList, buildDeckList }){
                         type="text" 
                         name="name" 
                         id="name" 
-                        placeholder={targetDeck?.name} 
                         value={formData.name} onChange={handleInputChange}/>
                     <label htmlFor="description"></label>
                         Description
@@ -68,7 +65,6 @@ function EditDeck({ deckList, buildDeckList }){
                             type="text"
                             name="description"
                             id="description" 
-                            placeholder={targetDeck?.description}
                             value={formData.description} onChange={handleInputChange}></textarea>
                 </div>
                 <Link to={`/decks/${deckId}`}><button>Cancel</button></Link>

@@ -1,28 +1,30 @@
 import React, {useState, useEffect} from "react";
-import {BrowserRouter as Router, Route, Link, Switch, useHistory, useLocation, useRouteMatch, useParams} from "react-router-dom"
-import {createCard} from "../utils/api"
+import {BrowserRouter as Router, Link, useHistory, useParams} from "react-router-dom"
+import {createCard, readDeck} from "../utils/api"
 
 function AddCard({deckList, buildDeckList}){
     const {deckId} = useParams()
-    const history = useHistory()
+    const history = useHistory()    
+    const [deck, setDeck] = useState({})
 
-    
     let initialFormData ={
         front: '',
         back: '',
     }
-    const [formData, setFormData] = useState(initialFormData)
+    const [formData, setFormData] = useState(initialFormData)    
 
-    let targetDeck = deckList.find((deck)=>{
-        return Number(deck.id) === Number(deckId)
-    })
-
+    useEffect(()=>{
+        readDeck(deckId)
+            .then( (res) =>{
+                setDeck(res)
+            })       
+    },[])
   
     function handleInputChange(event){
         event.preventDefault();
         setFormData({
             ...formData,
-            [event.target?.name]: event.target?.value
+            [event.target.name]: event.target.value
         });
     };
   
@@ -42,13 +44,13 @@ function AddCard({deckList, buildDeckList}){
                 <nav aria-label="breadcrumb">
                     <ol className="breadcrumb">
                         <li className="breadcrumb-item"><Link to="/">Home</Link></li>
-                        <li className="breadcrumb-item"><Link to={`/decks/${deckId}`}>{targetDeck?.name}</Link></li>
+                        <li className="breadcrumb-item"><Link to={`/decks/${deckId}`}>{deck && deck.name}</Link></li>
                         <li className="breadcrumb-item active">Add Card</li>
                     </ol>
                 </nav>
             </div>
 
-            <h1>{targetDeck?.name}: Add Card</h1>
+            <h1>{deck && deck.name}: Add Card</h1>
 
 
             <form onSubmit={handleSubmit}>

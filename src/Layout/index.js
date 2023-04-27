@@ -84,11 +84,13 @@ function Layout() {
               <ViewDeck deckList={deckList} buildDeckList={buildDeckList}/>
           </Route>
 
-          <Route path="/">
+          <Route exact={true} path="/">
             <DeckList deckList={deckList} buildDeckList={buildDeckList}/>
           </Route>
+          <Route>
+            <NotFound />            
+          </Route>
 
-          <NotFound />
         </Switch>
       </div>
     </>

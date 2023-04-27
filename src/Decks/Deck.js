@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import {BrowserRouter as Router, Route, Link, Switch, useHistory, useLocation, useRouteMatch, useParams, NavLink} from "react-router-dom"
+import React from 'react';
+import {BrowserRouter as Router, Link, useHistory} from "react-router-dom"
 import {deleteDeck} from "../utils/api"
 
 
@@ -35,4 +35,3 @@ function Deck({data, buildDeckList}){
 }
 
 export default Deck;
-//in button 
