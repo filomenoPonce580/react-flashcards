@@ -32,7 +32,11 @@ function ViewDeck({buildDeckList}){
         if(result){
             deleteCard(cardId)
                 .then(res => {
-                    buildDeckList()
+                    buildDeckList();
+                    readDeck(deckId)
+                        .then(res=>{
+                            setDeck(res)
+                        })
                     history.push(`/decks/${deckId}`)  
                 })
             }
@@ -65,13 +69,12 @@ function ViewDeck({buildDeckList}){
                         return <li key={indx} className="list-group-item">
                             <p>{card && card.front}</p>
                             <p>{card && card.back}</p>
-                            <Link to={`/decks/${deckId}/cards/${card?.id}/edit`}><button>edit</button></Link>
+                            <Link to={`/decks/${deckId}/cards/${card?.id}/edit`}><button>Edit</button></Link>
                             <button onClick={()=>handleDeleteCard(card.id)}>Delete</button>
                         </li>
                     })}
                 </ul>
             </div>
-
         </div>
     )
 }

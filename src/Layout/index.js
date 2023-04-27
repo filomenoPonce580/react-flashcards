@@ -31,25 +31,6 @@ function Layout() {
 
 
 
-  // function handleDeleteDeck(event){
-  //   event.preventDefault();
-  //   deleteDeck(formData)
-  //       .then(res => {
-  //           buildDeckList()
-  //           history.push(`/decks/${res.id}`)  
-  //       })
-  // }
-
-  // function handleDeleteCard(event){
-  //   event.preventDefault();
-  //   deleteCard(formData)
-  //       .then(res => {
-  //           buildDeckList()
-  //           history.push(`/decks/${res.id}`)  
-  //       })
-  // }
-
-
   return (
     <>
       <Header />
@@ -87,6 +68,7 @@ function Layout() {
           <Route exact={true} path="/">
             <DeckList deckList={deckList} buildDeckList={buildDeckList}/>
           </Route>
+          
           <Route>
             <NotFound />            
           </Route>

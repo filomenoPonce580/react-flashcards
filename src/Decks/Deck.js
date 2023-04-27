@@ -24,7 +24,7 @@ function Deck({data, buildDeckList}){
         <div className="card" >
             <div className="card-body">
                 <h5 className="card-title">{data.name}</h5> 
-                <span className="text-end">{data.cards.length} Cards</span>
+                <span className="text-end">{data.cards.length} cards</span>
                 <p className="card-text">{data.description}</p>
                 <Link to={`decks/${data.id}`}><button>View</button></Link>
                 <Link to={`/decks/${data.id}/study`}><button>Study</button></Link>
