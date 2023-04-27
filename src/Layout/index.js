@@ -60,11 +60,11 @@ function Layout() {
         <Switch>
 
           <Route path="/decks/:deckId/cards/:cardId/edit">
-              <EditCard deckList={deckList} buildDeckList={buildDeckList}/>
+              <EditCard buildDeckList={buildDeckList}/>
           </Route>
 
           <Route path="/decks/:deckId/cards/new">
-              <AddCard deckList={deckList} buildDeckList={buildDeckList}/>
+              <AddCard buildDeckList={buildDeckList}/>
           </Route>
 
 
@@ -77,11 +77,11 @@ function Layout() {
           </Route>
 
           <Route path="/decks/:deckId/edit">
-              <EditDeck deckList={deckList} buildDeckList={buildDeckList}/>
+              <EditDeck buildDeckList={buildDeckList}/>
           </Route>
 
           <Route path="/decks/:deckId">
-              <ViewDeck deckList={deckList} buildDeckList={buildDeckList}/>
+              <ViewDeck buildDeckList={buildDeckList}/>
           </Route>
 
           <Route exact={true} path="/">
